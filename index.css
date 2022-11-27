@@ -1,0 +1,9 @@
+body {
+    min-width: 250px;
+    background-color: black;
+    color: #FFFDF9;
+}
+
+#key_entered {
+    display: none;
+}
