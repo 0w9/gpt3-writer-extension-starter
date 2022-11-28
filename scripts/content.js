@@ -1,4 +1,7 @@
+import swal from 'sweetalert';
+
 const insert = (content) => {
+    swal("Hello world!");
     const elements = document.getElementsByClassName('droid');
 
     if (elements.length === 0) {
@@ -6,6 +9,11 @@ const insert = (content) => {
     }
 
     const element = elements[0];
+
+    const p = document.createElement('p');
+    p.textContent = "e";
+    element.appendChild(p);
+
   
     // Grab the first p tag so we can replace it with our injection
     const pToRemove = element.childNodes[0];
@@ -39,13 +47,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   
       console.log(content);
       insert(content)
-
-      chrome.notifications.create('', {
-        title: 'Just wanted to notify you',
-        message: 'How great it is!',
-        iconUrl: '',
-        type: 'basic'
-      });
   
       sendResponse({ status: 'success' });
     }
