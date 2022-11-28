@@ -14,7 +14,7 @@ const insert = (content) => {
     p.textContent = "e";
     element.appendChild(p);
 
-  
+  // 13
     // Grab the first p tag so we can replace it with our injection
     const pToRemove = element.childNodes[0];
     pToRemove.remove();
