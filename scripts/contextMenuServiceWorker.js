@@ -1,4 +1,3 @@
-// Function to get + decode API key
 const getKey = () => {
     return new Promise((resolve, reject) => {
       chrome.storage.local.get(['openai-key'], (result) => {
@@ -10,7 +9,7 @@ const getKey = () => {
     });
   };
 
-  const sendMessage = (content) => {
+const sendMessage = (content) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const activeTab = tabs[0].id;
 
@@ -52,43 +51,22 @@ const generate = async (prompt) => {
 
 const generateCompletionAction = async (info) => {
 	try {
-    const { selectionText } = info;
-    const basePromptPrefix =
-      `
-			Write me a detailed table of contents for a blog post with the title below.
-			
-			Title:
-			`;
+        const { selectionText } = info;
+        const basePromptPrefix =
+            `\nExplain me the following sentence in a easier language, without any technical terms.\nSencene:`;
 
-    const baseCompletion = await generate(`${basePromptPrefix}${selectionText}`);
+        const baseCompletion = await generate(`${basePromptPrefix}${selectionText}`);
 
-		// Add your second prompt here 
-		const secondPrompt = 
-		  `
-		  Take the table of contents and title of the blog post below and generate a blog post written in thwe style of Paul Graham. Make it feel like a story. Don't just list the points. Go deep into each one. Explain why.
-		
-		  Title: ${selectionText}
-		
-		  Table of Contents: ${baseCompletion.text}
-		
-		  Blog Post:
-		  `;
-		
-		// Call your second prompt
-        const secondPromptCompletion = await generate(secondPrompt);
-
-        sendMessage(secondPromptCompletion.text)
+        sendMessage(baseCompletion.text)
 	} catch (error) {
       console.log(error);
     }
 };
 
-// Add this in scripts/contextMenuServiceWorker.js
 chrome.contextMenus.create({
     id: 'context-run',
-    title: 'Generate blog post',
+    title: 'Explain this!',
     contexts: ['selection'],
-  });
+});
   
-  // Add listener
-  chrome.contextMenus.onClicked.addListener(generateCompletionAction);
+chrome.contextMenus.onClicked.addListener(generateCompletionAction);
